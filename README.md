@@ -16,7 +16,7 @@ In the same way, the image analysis works.
 
 The results are stored using the _Azure Storage Tables_ structure, a _nosql_ key-value table format.
 
-- [x] Desktop Python 3 app (this)
+- [x] Desktop Raspberry Pi Python 3 app (this)
 - [x] OpenCV 3.4 in the desktop app (this)
 - [x] Back-end Azure Functions 2 ([repo](https://github.com/BeyondLabsEY/meeting-reaction-functions))
 - [x] Front-end React ([repo](https://github.com/BeyondLabsEY/meeting-reaction-web))
