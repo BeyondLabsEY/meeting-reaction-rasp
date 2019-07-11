@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Meeting Word Cloud
+Comment=Application for recording meeting
+Exec=xterm -fa "Monospace" -maximized -e "python3 /home/pi/Desktop/meeting-word-cloud/main_app.py"
+Type=Application
+Encoding=UTF-8
+Terminal=false
+Categories=None;

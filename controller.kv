@@ -1,0 +1,63 @@
+#:kivy 1.0
+ 
+<Controller>:
+   
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 15
+ 
+        Image:
+            id: image
+            source: "beyondlabs-banner.png"
+            size: 200, 200 / self.image_ratio
+ 
+        Label:
+            id: my_custom_label
+            text: root.header_text
+            font_size: 15
+            
+        BoxLayout:
+            orientation: 'horizontal'
+            padding: 10
+ 
+            Label:
+                id: status_label
+                text: root.status_text
+                font_size: 15
+            
+            Label:
+                id: camera_label
+                text: root.camera_text
+                font_size: 15
+
+            
+        BoxLayout:
+            orientation: 'horizontal'
+            padding: 20
+            
+            Button:
+                id: start_button
+                disabled: root.start_button
+                text: root.start_meeting_button_text
+                font_size: 15
+                on_press: root.record_meeting()
+                background_color: (0.0, 1.0, 0.0, 1.0)
+     
+            Button:
+                id: stop_button
+                disabled: root.stop_button
+                text: root.stop_meeting_button_text
+                font_size: 15
+                on_press: root.stop_meeting()
+                background_color: (1.0, 0.0, 0.0, 1.0)
+            
+            Label:
+                halign: "right"
+                text: "Camera"
+                font_size: 15
+                size_hint: 0.3, 1
+                
+            CheckBox:
+                id: video_checkbox
+                size_hint: 0.15, 1
