@@ -31,7 +31,7 @@ camera_active = False
 recording_stop = False
 
 def get_faces_num(imagem):
-    classificador_face = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+    classificador_face = cv2.CascadeClassifier("classifier/haarcascade_frontalface_default.xml")
 
     imagem_gray = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
     faces = classificador_face.detectMultiScale(imagem_gray, 1.3, 5)

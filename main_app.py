@@ -74,7 +74,7 @@ class ControllerApp(App):
         return Controller(stop_meeting_button_text="Stop",
                           start_meeting_button_text="Start",
                           status_text=status_text,
-                          header_text="Meeting Reaction\nhttps://meetingwordcloud.azurewebsites.net",
+                          header_text="Meeting Reaction\n" + meeting.FRONT_END_APP,
                           start_button = False,
                           camera_text = "Camera off")
  
