@@ -15,9 +15,10 @@ import os
 import time
 import cv2
 import configparser
+import os
 
 config = configparser.ConfigParser()
-config.read("/config.ini")
+config.read(os.path.dirname(os.path.abspath(__file__))+"/config.ini")
 
 REMOTE_SERVER = config["DEFAULT"]["REMOTE_SERVER"]
 ACCOUNT_NAME = config["DEFAULT"]["ACCOUNT_NAME"]
