@@ -17,7 +17,7 @@ import cv2
 import configparser
 
 config = configparser.ConfigParser()
-config.read("config.ini")
+config.read("/config.ini")
 
 REMOTE_SERVER = config["DEFAULT"]["REMOTE_SERVER"]
 ACCOUNT_NAME = config["DEFAULT"]["ACCOUNT_NAME"]
