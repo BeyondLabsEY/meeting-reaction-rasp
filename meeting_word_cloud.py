@@ -19,13 +19,13 @@ import configparser
 config = configparser.ConfigParser()
 config.read("config.ini")
 
-REMOTE_SERVER = config["REMOTE_SERVER"]
-ACCOUNT_NAME = config["ACCOUNT_NAME"]
-ACCOUNT_KEY = config["ACCOUNT_KEY"]
-CONTAINER_NAME = config["CONTAINER_NAME"]
-QUEUE_NAME_AUDIO = config["QUEUE_NAME_AUDIO"]
-QUEUE_NAME_IMAGE = config["QUEUE_NAME_IMAGE"]
-FRONT_END_APP = config["FRONT_END_APP"]
+REMOTE_SERVER = config["DEFAULT"]["REMOTE_SERVER"]
+ACCOUNT_NAME = config["DEFAULT"]["ACCOUNT_NAME"]
+ACCOUNT_KEY = config["DEFAULT"]["ACCOUNT_KEY"]
+CONTAINER_NAME = config["DEFAULT"]["CONTAINER_NAME"]
+QUEUE_NAME_AUDIO = config["DEFAULT"]["QUEUE_NAME_AUDIO"]
+QUEUE_NAME_IMAGE = config["DEFAULT"]["QUEUE_NAME_IMAGE"]
+FRONT_END_APP = config["DEFAULT"]["FRONT_END_APP"]
 
 camera_active = False
 recording_stop = False

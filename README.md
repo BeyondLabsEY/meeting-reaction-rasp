@@ -1,3 +1,6 @@
+<img class="center" src="images/logo_meeting_reaction.png" alt="Meeting Reaction logo" />
+
+
 # Meeting Reaction 
 
 It is a solution that consists of using an IoT device based on Raspberry Pi integrated with touch screen and connected to a microphone with bluetooth and camera using USB (_webcam_). This device, when triggered, will record a particular meeting or session, through actions on the device screen user interface.
@@ -316,4 +319,3 @@ pip3 install -r requirements.txt
 This app uses the desktop interface [Kivy](https://kivy.org/#home), check their site for addition information if you have trouble in the installation.
 
 Once you have installed the dependencies, access the app using the shortcut ```meeting.Desktop```.
-
