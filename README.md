@@ -1,7 +1,13 @@
-<img class="center" src="images/logo_meeting_reaction.png" alt="Meeting Reaction logo" />
+<div align="center">
+  <img src="images/logo_meeting_reaction.png" alt="Meeting Reaction logo" width="370" height="57" />
 
+  ---
+  An application for viewing instant feedback during a meeting.
 
-# Meeting Reaction 
+  This feedback can be based on people’s speech or live reactions captured through facial recongition.
+</div>
+
+## Meeting Reaction Raspberry
 
 It is a solution that consists of using an IoT device based on Raspberry Pi integrated with touch screen and connected to a microphone with bluetooth and camera using USB (_webcam_). This device, when triggered, will record a particular meeting or session, through actions on the device screen user interface.
 

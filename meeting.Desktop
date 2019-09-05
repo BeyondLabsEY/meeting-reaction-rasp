@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Meeting Word Cloud
 Comment=Application for recording meeting
-Exec=xterm -fa "Monospace" -maximized -e "cd /home/pi/Desktop/meeting-reaction-rasp/; python3 main_app.py"
+Exec=xterm -fa "Monospace" -maximized -e "cd home/pi/Desktop/meeting-reaction-rasp/ && /usr/bin/python3 main_app.py"
 Type=Application
 Encoding=UTF-8
 Terminal=false
