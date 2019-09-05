@@ -53,7 +53,7 @@ sudo apt-get install portaudio19-dev
 
 ### OpenCV
 
-Orinally from [Life2Coding](https://www.life2coding.com/install-opencv-3-4-0-python-3-raspberry-pi-3/).
+Originally from [Life2Coding](https://www.life2coding.com/install-opencv-3-4-0-python-3-raspberry-pi-3/).
 
 Assuming you have Python 3 installed.
 
