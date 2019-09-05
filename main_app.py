@@ -20,9 +20,15 @@ class Controller(FloatLayout):
     start_button = BooleanProperty()
     stop_button = BooleanProperty()
     
-        
+    def audio_toggle(self):
+        meeting.audio_active = self.ids.audio_checkbox.active
+        print("Audio Status: " + str(meeting.audio_active))
+    
+    def video_toggle(self):
+        meeting.camera_active = self.ids.video_checkbox.active
+        print("Video Status: " + str(meeting.camera_active))
+              
     def record_meeting(self):
-        print(self.ids.video_checkbox.active)
         self.start_button = True
 
         self.start_meeting_text = 'Recording...'
@@ -32,13 +38,18 @@ class Controller(FloatLayout):
          
         self.header_text = "Meeting Reaction\n" + meeting.FRONT_END_APP + "\nMeeting Code: " + self.meeting_code
         
-        if self.ids.video_checkbox.active:
-            threading.Thread(target=meeting.video_recorder, args=(self.meeting_code, self)).start()
-            meeting.camera_active = True
-        else:
-            meeting.camera_active = False
-            
+        #if self.ids.video_checkbox.active:
+        threading.Thread(target=meeting.video_recorder, args=(self.meeting_code, self)).start()
+        #    meeting.camera_active = True
+        #else:
+        #    meeting.camera_active = False
+        
+        #if self.ids.audio_checkbox.active:
         threading.Thread(target=meeting.audio_recorder, args=(self.meeting_code, self)).start()
+        #    meeting.audio_active = True
+        #else:
+        #    meeting.audio_active = False
+        
         threading.Thread(target=meeting.enviar_arquivos, args=(self.meeting_code, self)).start()
         threading.Thread(target=meeting.buscar_codigo_sincronizado, args=(self.meeting_code, self)).start()
        

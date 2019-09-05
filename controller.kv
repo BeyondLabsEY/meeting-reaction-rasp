@@ -61,3 +61,18 @@
             CheckBox:
                 id: video_checkbox
                 size_hint: 0.15, 1
+                on_press: root.video_toggle()
+            
+            Label:
+                halign: "right"
+                text: "Audio"
+                font_size: 15
+                size_hint: 0.3, 1
+                
+            CheckBox:
+                id: audio_checkbox
+                size_hint: 0.15, 1
+                on_press: root.audio_toggle()
+                
+
+

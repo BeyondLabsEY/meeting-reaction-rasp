@@ -29,6 +29,7 @@ QUEUE_NAME_IMAGE = config["DEFAULT"]["QUEUE_NAME_IMAGE"]
 FRONT_END_APP = config["DEFAULT"]["FRONT_END_APP"]
 
 camera_active = False
+audio_active = False
 recording_stop = False
 
 def get_faces_num(imagem):
@@ -133,32 +134,34 @@ def video_recorder(meeting_code, main_app):
     cam = None
 
     while recording_stop is not True:
-        
-        time.sleep(30)
-        
-        if camera_active:
-            if cam is None:
-                cam = cv2.VideoCapture(0)
+        try:
+            time.sleep(30)
             
-            cap, frame = cam.read()
-            
-            if cap:
-                frame = cv2.resize(frame, None, fx=3, fy=3, interpolation=cv2.INTER_LANCZOS4)
-                num_faces = get_faces_num(frame)
-                main_app.camera_text = "Faces around " + str(num_faces) + "."
+            if camera_active:
+                if cam is None:
+                    cam = cv2.VideoCapture(0)
                 
-                print("Faces around " + str(num_faces) + ".")
+                cap, frame = cam.read()
                 
-                if num_faces > 0:
-                    random_file_name = util.get_random_string(4) + ".jpg"
-                    file_path="image_files/" + str(meeting_code) + "_" + random_file_name
-                    cv2.imwrite(file_path, frame)
-            
-            cam.release()
-            cam = None
-        else:
-            main_app.camera_text = "Camera off"
-            
+                if cap:
+                    frame = cv2.resize(frame, None, fx=3, fy=3, interpolation=cv2.INTER_LANCZOS4)
+                    num_faces = get_faces_num(frame)
+                    main_app.camera_text = "Faces around " + str(num_faces) + "."
+                    
+                    print("Faces around " + str(num_faces) + ".")
+                    
+                    if num_faces >= 0:
+                        random_file_name = util.get_random_string(4) + ".jpg"
+                        file_path="image_files/" + str(meeting_code) + "_" + random_file_name
+                        cv2.imwrite(file_path, frame)
+                
+                cam.release()
+                cam = None
+            else:
+                main_app.camera_text = "Camera off"
+        except:
+            traceback.format_exc()
+            pass
     
 
 def audio_recorder(meeting_code, main_app):
@@ -170,83 +173,95 @@ def audio_recorder(meeting_code, main_app):
 
     audio = pyaudio.PyAudio()
     
-    stream = audio.open(format=FORMAT, channels=CHANNELS,
-                        rate=RATE,
-                        input=True,
-                        frames_per_buffer=CHUNK)
+    stream = audio.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
 
     frames = []
     t1 = datetime.now()
     zero_vol = 0
-  
+    
+    print("Audio Status: " + str(audio_active))
+    
     while True:
-  
-        if not stream.is_active():
-            audio.terminate()
-            audio = pyaudio.PyAudio()
-            stream = audio.open(format=FORMAT, channels=CHANNELS,
-                                rate=RATE,
-                                input=True,
-                                frames_per_buffer=CHUNK,
-                                #input_device_index=1
-                                )
-            frames = []
-            t1 = datetime.now()
-
-        data = stream.read(CHUNK, exception_on_overflow = False)
-        data_chunk = array('h', data)
-        vol = max(data_chunk)
-        
-        if vol == 0:
-            zero_vol += 1
-
-            main_app.start_meeting_text = "Mic is muted!"
+        try:
+            if not audio_active:
+                #print("Audio Status: " + str(audio_active))
+                time.sleep(1)
+                continue
             
-            if zero_vol > 10:
-                cmd = "amixer -c 1 sset Mic toggle"
-                os.system(cmd)
+            #print("Audio Status: " + str(audio_active))
+            
+            if not stream.is_active():
+                print("Stream is not active")
+                audio.terminate()
+                audio = pyaudio.PyAudio()
+                stream = audio.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
+                frames = []
+                t1 = datetime.now()
+
+            data = stream.read(CHUNK, exception_on_overflow = False)
+            data_chunk = array('h', data)
+            vol = max(data_chunk)
+            
+            if vol == 0:
+                zero_vol += 1
+
+                main_app.start_meeting_text = "Mic is muted!"
+                
+                if zero_vol > 10:
+                    cmd = "amixer -c 1 sset Mic toggle"
+                    os.system(cmd)
+                    zero_vol = 0
+            else:
+                main_app.start_meeting_text = "Recording..."
                 zero_vol = 0
-        else:
-            main_app.start_meeting_text = "Recording..."
-            zero_vol = 0
 
-        frames.append(data)
+            frames.append(data)
 
-        t2 = datetime.now()
-        result = t2 - t1
+            t2 = datetime.now()
+            result = t2 - t1
+      
+            if result.seconds >= RECORD_SECONDS:
+                print("Tempo terminado")
+                stream.stop_stream()
+                
+                random_file_name = util.get_random_string(4) + ".wav"
 
-        if result.seconds >= RECORD_SECONDS:
-            print("Tempo terminado")
-            stream.stop_stream()
+                wavfile=wave.open("audio_files/" + str(meeting_code) + "_" + random_file_name,'wb')
+                wavfile.setnchannels(CHANNELS)
+                wavfile.setsampwidth(audio.get_sample_size(FORMAT))
+                wavfile.setframerate(RATE)
+                wavfile.writeframes(b''.join(frames))
+                wavfile.close()
+
+            if recording_stop is True:
+                print("Recording is over")
+                stream.stop_stream()
+                
+                random_file_name = util.get_random_string(4) + ".wav"
+
+                wavfile = wave.open("audio_files/" + str(meeting_code) + "_" + random_file_name, 'wb')
+                wavfile.setnchannels(CHANNELS)
+                wavfile.setsampwidth(audio.get_sample_size(FORMAT))
+                wavfile.setframerate(RATE)
+                wavfile.writeframes(b''.join(frames))
+                wavfile.close()
+
+                main_app.start_meeting_text = "Start"
+                
+                break
+
+        except:
+            traceback.format_exc()
+            pass
+        
+    try:
+        stream.close()
+        audio.terminate()
+    except:
+        traceback.format_exc()
+        pass
             
-            random_file_name = util.get_random_string(4) + ".wav"
-
-            wavfile=wave.open("audio_files/" + str(meeting_code) + "_" + random_file_name,'wb')
-            wavfile.setnchannels(CHANNELS)
-            wavfile.setsampwidth(audio.get_sample_size(FORMAT))
-            wavfile.setframerate(RATE)
-            wavfile.writeframes(b''.join(frames))
-            wavfile.close()
-
-        if recording_stop is True:
-            stream.stop_stream()
             
-            random_file_name = util.get_random_string(4) + ".wav"
-
-            wavfile = wave.open("audio_files/" + str(meeting_code) + "_" + random_file_name, 'wb')
-            wavfile.setnchannels(CHANNELS)
-            wavfile.setsampwidth(audio.get_sample_size(FORMAT))
-            wavfile.setframerate(RATE)
-            wavfile.writeframes(b''.join(frames))
-            wavfile.close()
-
-            main_app.start_meeting_text = "Start"
-            
-            break
-
-    stream.close()
-    audio.terminate()
-
 def is_connected(hostname=REMOTE_SERVER):
   try:
     host = socket.gethostbyname(hostname)
