@@ -1,3 +1,5 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=BeyondLabsEY_meeting-reaction-rasp&metric=alert_status)](https://sonarcloud.io/dashboard?id=BeyondLabsEY_meeting-reaction-rasp)
+
 <div align="center">
   <img src="images/logo_meeting_reaction.png" alt="Meeting Reaction logo" width="370" height="57" />
 
